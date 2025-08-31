@@ -15,9 +15,19 @@ echo.
 echo Cloning LazyVim starter template...
 
 REM Backup any existing Neovim configuration
-if exist "%LOCALAPPDATA%\nvim" (
+set "NVIM_DIR=%LOCALAPPDATA%\nvim"
+set "NVIM_BAK=%LOCALAPPDATA%\nvim.bak"
+
+if exist "%NVIM_DIR%" (
   echo Backing up existing nvim to nvim.bak...
-  powershell -Command "Move-Item '%LOCALAPPDATA%\\nvim' '%LOCALAPPDATA%\\nvim.bak' -Force"
+
+  rem Remove old backup if it exists
+  if exist "%NVIM_BAK%" (
+    powershell -Command "Remove-Item -Recurse -Force '%NVIM_BAK%'"
+  )
+
+  rem Move current nvim to backup
+  powershell -Command "Move-Item '%NVIM_DIR%' '%NVIM_BAK%' -Force"
 )
 if exist "%LOCALAPPDATA%\nvim-data" (
   echo Backing up existing nvim-data to nvim-data.bak...
