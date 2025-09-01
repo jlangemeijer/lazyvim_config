@@ -37,8 +37,10 @@ vim.keymap.set('n', 'r', function()
   vim.fn.writefile(vim.list_slice(lines, 1, line), tmp)
 
   -- Run in vertical terminal interactively
-  vim.cmd('vsplit | terminal python -i "' .. tmp .. '"')
+  local dir = vim.fn.expand('%:p:h')
+  vim.cmd('vsplit | lcd ' .. dir .. ' | terminal python -i "' .. tmp .. '"')
   vim.cmd('startinsert')
+  
 end, { noremap = true, silent = true, desc = "Run Python up to line in vertical terminal" })
 
 
